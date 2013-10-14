@@ -1,0 +1,100 @@
+<div id="box">
+
+	<div class="standard"><h3>Edycja miejsca</h3>
+	Pola oznaczone * są obowiązkowe.
+	</div>
+
+
+	<% # link do update to :put
+	 form_for(@place, :url => admin_place_path(@place), :html => {:method => :put, :multipart => true} ) do |f| %>
+
+	<div id="col-left">
+
+		   <p> Utworzono  <%= @place.created_at %></p>
+		  <p>
+		    <%= f.label :name, "Nazwa" %><br />
+		    <%= f.text_field :name %>
+		    <%= error_message_on @place, :name %>    
+		  </p>
+		 <p>
+		    <%= f.label :street, "Ulica" %><br />
+		    <%= f.text_field :street %>
+		    <%= error_message_on @place, :street %> 
+		  </p>
+
+
+		 <div class="open-hours"> 
+			<fieldset>
+			<legend><span class="label"><%= f.label :open_hours, "Godziny otwarcia" %></span></legend>
+			 <% index = 0 %>
+			  <% f.fields_for :open_hours do |hour_form| %>
+			    <%= render :partial => 'open_hours', :locals => {:form => hour_form, :index => index } %>
+			    <% index = index + 1 %>
+			  <% end %>
+			   <div id="more-hours"><%= link_to_remote "Dodatkowe pole", {
+			      :url => {:action => "new_open_hours", :id => index },
+			      :update => 'more-hours',
+			      :success => ''
+			    }, {:class => 'add_new_line'}  %>  
+			  </div><!-- more hours -->
+			</fieldset>
+		</div><!-- open-hours-->  
+
+		 <p>
+		    <%= f.label :description, "Opis" %><br />
+		    <%= f.text_area :description %>
+		    <%= error_message_on @place, :description %>
+		  </p>
+
+		<p>
+		<%= f.label :name, "Kategoria"%><br />
+		<%= select_tag 'place[category_id]', '<option value="0">Wybierz kategorię</option> ' + options_from_collection_for_select (Category.all, 'id', 'name', @place.category_id) %>
+		    <%= error_message_on @place, :category %>
+		</p> 
+		 <p>
+		    <%= f.label :active, "Publikuj" %><br />
+		    <%= f.check_box :active %>
+		  </p>
+
+		<% if !@place.photos.blank? %>
+			<div class="standard"> <h3>Zdjęcia</h3></div>
+			<div class="photos">
+
+			  <%  @place.photos.each do |p| %>
+				<div class="photo-div">
+				  <%= image_tag p.public_filename(:big), :class => "photo"%> 
+
+				</div>
+			  <% end %>
+
+			</div>
+		<% end %>
+	  <p>
+	    <%= label :uploaded_data, "Nowe zdjęcie" %><br />
+	    <%= file_field :photo, :uploaded_data %>
+	  </p>
+	 
+
+	</div><!-- left -->
+
+	<div id="col-right">
+
+	  <p>
+	    <%= f.hidden_field :latitude %>
+	    <%= f.hidden_field :longitude %>
+
+	    <%= error_message_on @place, :latitude %>
+	 <div class="map">
+	      <%= @map.div(:width => 550, :height => 400) %> 
+	 </div>   
+	 <p>
+	    <%= f.submit 'Zmień' %>
+	  </p>
+
+	<div class="standard"><%= link_to 'Nie edytuj miejsca', admin_places_path %></div>
+
+	</div><!-- right -->
+
+	<% end %>
+
+</div><!-- box-->

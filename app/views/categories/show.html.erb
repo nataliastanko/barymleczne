@@ -1,0 +1,96 @@
+<div id="box">
+<div id="col-left">
+<div class="standard"> <h3>Kategoria: <%=h @category.name %></h3></div>
+
+<% if !@places.blank? %>
+
+<% @places.each do |place| %>
+
+<div class="place">
+	    <span class="title"><%= link_to place.name , place_path(place) %></span> | <%= place.category.name %>
+	    <p>ul. <%=h place.street %></p>
+	    <p>Godziny otwarcia:</p>
+		<% place.open_hours.each do |oh| %>
+		<%=h oh.from_day %> - <%=h oh.to_day %> <%=h oh.from_hour %> - <%=h oh.to_hour%><br />
+		<% end %>
+	    
+	      <%  place.photos.each do |p| %>
+	      <%= image_tag p.public_filename(:small), :class => 'photo' %>
+	      <% end %>
+		<div class="content"><%= link_to truncate((h place.description), :length => 200), place_path(place) %></div>
+	</div>
+
+<% end %>
+<%= will_paginate @places, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination"} %>
+
+<% else %>
+<div class="statement">Brak miejsc w tej kategorii.</div>
+<% end %>
+
+</div><!-- col-left-->
+
+
+<div id="col-right">
+
+
+	<div class="standard"> 
+	<h3><%= link_to "Aktualności", :controller => "news", :action => "index" %></h3>
+	</div>
+
+	<div id="news-main">
+	<% if @news.blank? %>
+		<div class="statement">Brak aktualności</div>
+	<% else %>
+	<% for new in @news do  %>
+
+	<div class="news-one">
+	    <span class="title"><%= link_to new.title, :controller => "news", :action => "show", :id => new %></span> 
+	    <p class="date"> <%=h new.created_at %></p>
+	    <p class="content"><%= link_to truncate((h new.contents), 100), :controller => "news", :action => "show", :id => new %></p>
+	    <p class="signature">Autor:<span class="signature"><%=h new.editor.login %></span></p>
+	</div>
+
+	<% end %>
+	<% end %>
+	</div><!-- news-main -->
+
+	<div class="standard"><h3>Tagi</h3></div>
+	<div id="tags">
+	 <% if !@tags.blank? %>
+		 <div class="place">
+		 <% @tags.each do |tag| %>
+		  <%= link_to tag.name, tag_path(tag), :class => "tag" %> 
+		  <% end %>
+		  </div>
+	<% else %>
+		<div class="statement">Brak tagów</div>
+	<% end %>
+	</div><!-- tags -->
+
+
+	<div class="standard"> 
+	<h3>Ostatnie komentarze</h3/>
+	</div>
+	<div id="last-comments">
+
+	<% if @comments.blank? %>
+	  <div class="statement">Brak komentarzy</div>
+	<% else %>
+	<ul class="without-style-type">
+	<% @comments.each do |comment| %>
+	<li class="last-comment">
+	<span class="title"> <%= link_to comment.place.name, place_path(comment.place_id) %></span> | Autor:<span class="signature"> <%=h comment.autor %></span>
+	<p><span class="date"> <%=h comment.created_at %></span></p>
+	<div class="content"><%= simple_format(h comment.contents) %></div>
+	
+	</li>
+	<% end %>
+	</ul>
+	<% end %>
+
+	</div><!-- last-comments -->
+
+
+</div><!-- col-right-->
+
+</div><!--box-->

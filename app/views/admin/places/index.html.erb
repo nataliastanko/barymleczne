@@ -1,0 +1,61 @@
+
+<div id="box">
+
+<div class="standard"> <h3>Zgłaszane zmiany<h3/></div>
+
+<% if @changes.blank? %> <div class="statement">Brak. </div><% else %>
+
+<table>
+ <tr>
+  <th> <strong>Zaznacz:</strong></th>
+  <th><strong>Data zgloszenia: </strong> </th>
+  <th><strong>Autor:</strong> </th>
+  <th><strong>Email:</strong> </th>
+  <th><strong>Zobacz:</strong> </th>
+ </tr>
+  <% @changes.each do |change| %> 
+ <tr>
+  <td><% if change.done == true %>TAK<% else %><%= link_to "Zrobione", :controller => "admin/changes", :action => "done", :id => change.id %><% end %></td>
+  <td> <%=h change.created_at %></td>
+  <td><%=h change.author %></td>
+  <td> <%=h change. email %></td>
+  <td> <%= link_to change.place.name, admin_place_path(change.place.id) %></td>
+  <td> <%= link_to truncate(change.description, 12), admin_place_change_path(change.place_id,change) %></td>
+ <tr>
+ <% end %>
+</table>
+</div><!-- changes-->
+<% end %>
+
+<div class="standard"> <h3>Lista miejsc<h3/></div>
+<table>
+  <tr>
+    <th>Opublikowane?</th>
+    <th>Nazwa</th>
+    <th>Ulica</th>
+    <th>Godziny otwarcia:</th>
+    <th>Zarządzaj</th>
+    <th>Historia edycji</th>
+  </tr>
+   <% @places.each do |place| %>
+  <tr>
+
+    <td><% if place.active %> V <% else %><span style="color:red;"> X </span><% end %></td>
+    <td><%=h place.name %></td>
+    <td><%=h place.street %></td>
+    <td><% place.open_hours.each do |oh| %>
+        <%=h oh.from_day %> - <%=h oh.to_day %> <%=h oh.from_hour %> - <%=h oh.to_hour%> <br/>
+        <% end %>
+    </td>
+    <td><%= link_to 'Zarządzaj', admin_place_path(place) %></td>
+     <td><%= link_to 'Historia', admin_place_histories_path(place) %></td>
+  </tr>
+<% end %>
+</table>
+
+<div class="legend">v - opublikowano, x - nieopublikowano</div>
+
+<%= will_paginate @places, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination"} %>
+
+
+</div><!-- box -->

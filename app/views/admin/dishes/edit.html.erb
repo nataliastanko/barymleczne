@@ -1,0 +1,50 @@
+<div id="box">
+
+	<div class="standard"><h3>Edycja dania</h3>
+	</div>
+
+<div class="center">
+
+<% form_for(@dish, :url => admin_dish_path(@dish), :html => {:method => :put} ) do |f| %>
+
+  <p>
+    <%= f.label :name, "Nazwa" %><br />
+    <%= f.text_field :name %>
+    <%= error_message_on @dish, :name %>    
+  </p>
+ 
+  <p>
+    <%= f.label :price, "Cena" %><br />
+    <%= f.text_field :price %> zł</br >
+    <%= error_message_on @dish, :price %>    
+  </p>
+  <p>
+    <%= f.label :weight, "Waga" %><br />
+    <%= f.text_field :weight %> g<br />
+    <%= error_message_on @dish, :weight %>    
+ </p>
+ <p>
+    <%= f.label :pieces, "Ilość sztuk" %><br />
+    <%= f.text_field :pieces %>
+    <%= error_message_on @dish, :pieces %>    
+  </p>
+ <p>
+    <%= f.label :description, "Opis dania" %><br />
+    <%= f.text_field :description %>
+    <%= error_message_on @dish, :descriprion %>    
+  </p>
+
+  <p>
+    <%= f.label :is_available, "Dostępne?" %><br />
+    <%= f.check_box :is_available %>
+  </p>
+  <p>
+    <%= f.submit 'Zmień' %>
+  </p>
+<% end %>
+
+
+</div>
+
+
+</div><!-- box-->

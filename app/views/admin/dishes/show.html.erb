@@ -1,0 +1,13 @@
+<p>
+  <b>Price:</b>
+  <%=h @dish.price %>
+</p>
+
+<p>
+  <b>Is available:</b>
+  <%=h @dish.is_available %>
+</p>
+
+
+<%= link_to 'Edit', edit_dish_path(@dish) %> |
+<%= link_to 'Back', dishes_path %>

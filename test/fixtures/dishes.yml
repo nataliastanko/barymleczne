@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  price: 1.5
+  is_available: false
+
+two:
+  price: 1.5
+  is_available: false

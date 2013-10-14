@@ -1,0 +1,163 @@
+<div id="box">
+
+<div class="standard"> <h3><%=h @place.name %></h3>
+<p>ul.<%=h @place.street %> | <span class="strong">Kategoria:</span> <%= @place.category.name %></p>
+<p class="raport-change"><%= link_to "Nieścisłości w szczegółach miejsca? Zgłoś zmianę!",  new_place_change_path(@place) %></p>
+</div>
+
+<div id="places">
+
+<div class="place">
+	<div id="col-left">
+
+<div class="standard"> <h3>Godziny otwarcia</h3></div>
+		<p class="date">
+		<% @place.open_hours.each do |oh| %>
+			<%=h oh.from_day %> - <%=h oh.to_day %> <%=h oh.from_hour %> - <%=h oh.to_hour%> <br/>
+		<% end %>
+		</p>
+
+		<div class="map"><%= @map.div(:width => 450, :height => 300) %></div>
+		<div class="content"><%= simple_format(h @place.description) %></div>
+
+		<% if @place.active %>
+
+			<div class="standard"> <h3>Komentarze i ocena</h3></div>
+		
+			<div id="votes">
+				<h3>Ocena: <%= @votes %></h3>
+				  <% form_for([@place], :url => { :controller => "places", :action => "vote", :place_id => @place}) do |f| %>
+				  <p>
+				    <%= select_tag "vote[rate]", options_for_select([1,2,3,4,5], :selected => 3) %>
+				    <%= f.submit "Oceń" %>
+				  </p>
+				<% end %>
+			</div><!-- votes -->
+
+			<div id="comments">
+			<% if @place.comments.blank? %>
+			  <p class="statement">Brak komentarzy.</p>
+			<% else %>
+			<ul class="without-style-type">
+				<% @place.comments.each do |comment| %>
+				<li>
+				<span class="date"><strong> Autor: </strong> <%=h comment.autor %> | <strong> Data: </strong> <%=h comment.created_at %></span>
+				<div class="comment"><%= simple_format( h comment.contents) %></div>
+				</li>
+			 	<% end %>
+			 </ul>
+			<% end 
+			# end of: if comments
+			%>
+			</div> <!-- comments -->
+
+			<div id="new-comment">
+			<% @comment = flash[:com_errors] unless flash[:com_errors].nil? %>
+				<% form_for([@place, @comment]) do |f| %>
+				  <p>
+				    <%= f.label :autor, "Autor" %><br />
+				    <%= f.text_field :autor %>
+				    <%= error_message_on @comment, :autor %>    
+				  </p>
+				  <p>
+				    <%= f.label :email, "Email (nie będzie publikowany)" %><br />
+				    <%= f.text_field :email %>
+				    <%= error_message_on @comment, :email %>    
+				  </p>
+				  <p>
+				    <%= f.label :contents, "Treść" %><br />
+				    <%= f.text_area :contents, :rows => 10 %>
+				    <%= error_message_on @comment, :contents %>    
+				  </p>
+				  <p>
+				    <%= f.submit 'Dodaj' %>
+				  </p>
+				<% end %>
+			</div> <!-- new-comment -->
+
+			
+		<% end 
+		# end of: jeśli propozycja to nie wyświetlaj opcji komentowania i dodawania tagów
+		%>
+		</div><!-- col-left -->
+
+	<div id="col-right">
+
+
+		
+
+		<% if @place.active %>
+			<div id="dishes">
+			<div class="standard"> <h3>Dania</h3></div>
+				<% if @place.dishes.blank? %>
+				  <p>Brak listy dań na stronie.</p>
+				<% else %>
+					  <table class="dishes">  
+					  
+					  <tr>
+					<th></th>
+					   <th><strong>Nazwa:</strong></th>
+					<th></th>	
+					   <th><strong>Waga:</strong></th>
+					   <th><strong>Sztuk:</strong></th>
+					   <th><strong>Cena:</strong></th>
+					  </tr>
+						<% @place.dishes.each do |dish|%>
+					  <tr>
+					     <td><% if dish.is_available %> <!--img src="/img/v.jpg" /--> V <%else%>  X <%end%></td>
+					     <td><%=h dish.name %></td>
+						<td><%=h dish.description %></td>
+					     <td><% if !dish.weight.blank? %><%=h dish.weight %> g <% end %></td>
+					     <td><% if !dish.pieces.blank? %><%=h dish.pieces %> szt<% end %></td>
+						<td><% if !dish.price.blank? %><%=h dish.price %> zł<% end %></td>
+					 </tr>
+					 <% end %>
+					 </table>
+				<% end 
+				# end of: if dishes
+				%>
+			<div class="legend">x - niedostępne, v - dostępne</div>
+			</div><!-- dishes -->
+
+
+			<div id="tags-place">
+				<div class="standard"> <h3>Tagi</h3></div>
+				<% @place.tags.each do |tag| %>
+				  <%= link_to tag.name, tag_path(tag) %>
+				<% end %>
+			</div><!-- tags -->
+
+			<div id="new-tag">
+				<% @tag = flash[:errors] unless flash[:errors].nil? %>
+				 <% form_for([@place, @tag], :url => place_tags_path(@place)) do |f| %>
+				  <p>
+				    <%= f.label :name, "Dodaj tag: " %><br />
+				    <%= text_field_with_auto_complete :tag, :name, {}, {:method => :get} %>
+				    <%= error_message_on @tag, :name %>    
+				  </p>
+				<%= recaptcha_tags %>
+				  <p>
+				    <%= f.submit "Otaguj to miejsce" %>
+				  </p>
+				<% end %>
+			</div><!-- new- tag-->
+		<% end 
+		# if active
+		%>
+
+		<% if !@place.photos.blank? %>
+		<div class="standard"> <h3>Zdjęcia</h3></div>
+		<div class="photos">
+		  <%  @place.photos.each do |p| %>
+		<div class="photo-div">
+		  <%= image_tag p.public_filename(:big), :class => "photo-show" %>
+		</div>
+		  <% end %>
+		</div>
+		<% end %>
+		
+	</div><!-- col-right -->
+	
+</div><!-- place-->
+</div><!-- places -->
+</div><!-- box-->

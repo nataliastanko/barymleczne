@@ -1,0 +1,26 @@
+
+<h4>Komentarz do miejsca:
+  <em><%=h @comment.place.name %></em>, ul. <%= @comment.place.street %></h4>
+
+<p>
+  <b>Data:</b>
+  <%=h @comment.created_at %>
+</p>
+
+<p>
+  <b>Autor:</b>
+  <%=h @comment.autor %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @comment.email %>
+</p>
+
+<p>
+  <b>Treść:</b>
+  <%=h @comment.contents %>
+</p>
+
+<%= link_to 'Edit', edit_admin_comment_path(@comment) %> |
+<%= link_to 'Wróć do miejsca', admin_place_path(@comment.place_id) %>

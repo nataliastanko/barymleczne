@@ -1,0 +1,51 @@
+<div id="box">
+
+	<div class="standard"><h3>Lista edytorów</h3>
+	</div>
+
+	<div class="standard"><span class="label"><%= link_to 'Nowy edytor', new_admin_editor_path %></span>
+	</div>
+
+	<table>
+	  <tr>
+	    <th>Admin?</th>
+	    <th>Login</th>
+	    <th>Email</th>
+	    <th>Imię i nazwisko</th>
+	    <th>Status</th>
+	    <th>Historia</th>
+
+	<% if (!current_editor.nil? and current_editor.admin) %>
+
+	    <th>Edycja</th>
+	    <th>Blokada</th>
+	<%end %>
+	  </tr>
+
+	<% @editors.each do |editor| %>
+	  <tr>
+	    <td><% if editor.admin %>Tak<% else %>Nie<% end %></td>
+	    <td><%=h editor.login %></td>
+	    <td><%=h editor.email %></td>
+	    <td><%=h editor.name_surname %></td>
+	    <td><% if  editor.active == true %>Aktywny<% else %> Zablokowany<% end %></td>
+	    <td><%= link_to 'Historia czynnosci', admin_editor_histories_path(editor) %></td>
+
+	<% if current_editor.admin %>
+	  <% if !editor.admin %>
+	    <td><%= link_to 'Edytuj', edit_admin_editor_path(editor) %></td>
+	    <td><% if editor.active == true %>
+	       <%= link_to 'Zablokuj', :controller => "admin/editors", :action => "block", :id => editor %>
+	       <% else %>
+	       <%= link_to 'Odblokuj', :controller => "admin/editors", :action => "unblock", :id => editor %>
+	       <% end %>
+	    </td>
+	 <% else %>
+	 <td>-</td><td>-</td>
+	 <% end %>
+	<% end %>
+	  </tr>
+	<% end %>
+	</table>
+
+</div><!-- box-->

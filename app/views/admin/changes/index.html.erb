@@ -1,0 +1,39 @@
+<div id="box">
+
+<% if !@changes.blank? %>
+
+<div class="standard"> <h3>Wszystkie zgłoszone zmiany</h3></div>
+
+<table>
+  <tr>
+    <th>Email</th>
+    <th>Autor</th>
+    <th>Skorygowane</th>
+    <th>Opis</th>
+ <% if current_editor.admin %>
+    <th>Edycja</th>
+ <% end %>
+  </tr>
+
+<% @changes.each do |change| %>
+  <tr>
+    <td><%=h change.email %></td>
+    <td><%=h change.author %></td>
+    <td><%=h change.done %></td>
+    <td><%= link_to truncate(change.description, 12), admin_change_path(change) %></td>
+ <% if current_editor.admin %>
+    <td><%= link_to 'Edytuj', edit_admin_change_path(change) %></td>
+<% end %>
+  </tr>
+<% end %>
+</table>
+<%= will_paginate @changes, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination" } %>
+
+<% else %>
+
+<div class="statement">Brak zgłoszonych zmian</p>
+
+<% end %>
+
+</div>
+

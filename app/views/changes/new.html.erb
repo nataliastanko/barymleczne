@@ -1,0 +1,94 @@
+<div id="box">
+
+<div class="standard"><h3>Zgłaszanie zmiany do <%= @place.name %></h3>
+<h3>ul. <%= @place.street%></h3>
+Pola oznaczone * są obowiązkowe.<br />
+</div>
+
+<div id="col-left">
+<% form_for(@change, :url => place_changes_path(@place)) do |f| %>
+
+  <p>
+    <%= f.label :description, "Co się zmieniło? *", :class => "label" %><br />
+    <%= f.text_area :description %>
+    <%= error_message_on @change, :description %>    
+  </p>
+  <p>
+    <%= f.label :author, "Twój podpis (nie będzie publikowany) *", :class => "label" %><br />
+    <%= f.text_field :author %>
+    <%= error_message_on @change, :author %>    
+  </p>
+  <p>
+    <%= f.label :email, "Twój email (nie będzie publikowany) *", :class => "label" %><br />
+    <%= f.text_field :email %>
+    <%= error_message_on @change, :email %>    
+  </p>
+ <p> <%= recaptcha_tags %>  </p>
+ <p>
+    <%= f.submit 'Zgłoś' %>
+  </p>
+<% end %>
+
+<div class="standard"><%= link_to 'Nie zgłaszam zmian', place_path(@place) %></div>
+
+</div><!-- col-left-->
+
+
+<div id="col-right">
+
+
+
+<div class="standard"> <h3>Godziny otwarcia</h3></div>
+		<p class="date">
+		<% @place.open_hours.each do |oh| %>
+			<%=h oh.from_day %> - <%=h oh.to_day %> <%=h oh.from_hour %> - <%=h oh.to_hour%> <br/>
+		<% end %>
+		</p>
+
+		<div class="content"><%= simple_format(h @place.description) %></div>
+		
+
+		<% if @place.active %>
+			<div id="dishes">
+			<div class="standard"> <h3>Dania</h3></div>
+				<% if @place.dishes.blank? %>
+				  <p>Brak listy dań na stronie.</p>
+				<% else %>
+					  <table class="dishes">  
+					  
+					  <tr>
+					<th></th>
+					   <th><strong>Nazwa:</strong></th>
+					<th></th>	
+					   <th><strong>Waga:</strong></th>
+					   <th><strong>Sztuk:</strong></th>
+					   <th><strong>Cena:</strong></th>
+					  </tr>
+						<% @place.dishes.each do |dish|%>
+					  <tr>
+					     <td><% if dish.is_available %> V <%else%>  X <%end%></td>
+					     <td><%=h dish.name %></td>
+						<td><%=h dish.description %></td>
+					     <td><% if !dish.weight.blank? %><%=h dish.weight %> g <% end %></td>
+					     <td><% if !dish.pieces.blank? %><%=h dish.pieces %> szt<% end %></td>
+						<td><% if !dish.price.blank? %><%=h dish.price %> zł<% end %></td>
+					 </tr>
+					 <% end %>
+					 </table>
+				<% end 
+				# end of: if dishes
+				%>
+			<div class="legend">x - niedostępne, v - dostępne</div>
+			</div><!-- dishes -->
+
+
+		<% end 
+		# if active
+		%>
+
+		
+	</div><!-- col-right -->
+	
+</div><!-- place-->
+</div><!-- places -->
+</div><!-- box-->

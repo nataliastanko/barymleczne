@@ -1,0 +1,18 @@
+<div id="box">
+
+<div class="standard"> <h3>Aktualności</h3></div>
+
+<div id="news">
+<% for new in @news do  %>
+
+<div class="news-one">
+   
+    <span class="title"><%= link_to new.title, :controller => "admin/news", :action => "show", :id => new %></span> 
+    <p class="date"> <%=h new.created_at %></p>
+     <p class="content"><%= link_to truncate(h new.contents), :controller => "admin/news", :action => "show", :id => new %></p>
+    <p class="signature">Dodane przez:<span class="signature"><%=h new.editor.login %></span>.  News dla:<% if new.for_guests %> gości | <% end %><% if new.for_editors %> edytorów | <% end %></p>
+</div>
+<%= will_paginate @news, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination"} %>
+<% end %>
+</div><!-- news -->
+</div><!-- box -->

@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  from_day: MyString
+  to_day: MyString
+  from_hour: 2010-02-15 21:28:55
+  to_hour: 2010-02-15 21:28:55
+
+two:
+  from_day: MyString
+  to_day: MyString
+  from_hour: 2010-02-15 21:28:55
+  to_hour: 2010-02-15 21:28:55

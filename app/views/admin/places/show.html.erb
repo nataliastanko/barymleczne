@@ -1,0 +1,186 @@
+<div id="box">
+
+	<div class="standard"> <h3>Zarządzanie miejscem: <%=h @place.name %></h3>
+	<p>ul.<%=h @place.street %> | <span class="strong">Kategoria:</span> <%= @place.category.name %></p>
+	<%= link_to 'Edytuj', edit_admin_place_path(@place) %> |
+	<%= link_to 'Usuń', admin_place_path(@place), :confirm => 'Jesteś pewny?', :method => :delete %>
+	</div>
+
+	<div id="places">
+
+	<div class="place">
+		<div id="col-left">
+
+			<div id="changes">
+				<div class="standard"> <h3>Zgłaszane zmiany</h3></div>
+				<% if !@place.changes.blank? %>
+				<table>
+				 <tr>
+				  <th> <strong>Skorygowano:</strong></th>
+				  <th><strong>Data zgloszenia: </strong> </th>
+				  <th><strong>Autor:</strong> </th>
+				  <th><strong>Email:</strong> </th>
+				  <th><strong>Zobacz:</strong> </th>
+				 </tr>
+				  <% @place.changes.each do |change| %> 
+				 <tr>
+				  <td><% if change.done == true %>V<% else %><%= link_to "Zrobione", :controller => "admin/changes", :action => "done", :id => change.id %><% end %></td>
+				  <td> <%=h change.created_at %></td>
+				  <td><%=h change.author %></td>
+				  <td> <%=h change. email %></td>
+				  <td> <%= link_to truncate(change.description, 12), admin_place_change_path(@place,change) %></td>
+				 <tr>
+				 <% end %>
+				</table>
+
+				<% else %>
+					<div class="statement">Brak zgłaszanych zmian.</div>
+				<% end %>
+			</div><!-- changes-->
+
+
+			<div class="standard"> <h3>Godziny otwarcia</h3></div>
+				<p class="date">
+				<% @place.open_hours.each do |oh| %>
+					<%=h oh.from_day %> - <%=h oh.to_day %> <%=h oh.from_hour %> - <%=h oh.to_hour%> <br/>
+				<% end %>
+				</p>
+				 <p><b>Opublikowane:</b> 
+				  <% if @place.active == true %> Tak 
+				  <% else %> Nie
+				  <% end %> </p> 
+				  <p>
+				  <b>Data dodania:</b>
+				  <%=h @place.created_at %> | 
+				  </p>
+				  <p>
+				  <b>Ostatnia aktualizacja:</b>
+				  <%=h @place.updated_at %></p>
+				<p>
+				<div class="map"><%= @map.div(:width => 450, :height => 300) %></div>
+				<div class="content"><%= simple_format(h @place.description) %></div>
+
+				<div class="standard"> <h3>Komentarze i ocena</h3>
+					<%= link_to "Zobacz statystyki głosowania na miejsce", admin_place_votes_path(@place) %>
+				</div>
+
+				<div id="votes">
+				<h3>Ocena: <%= @votes %></h3>
+				</div><!-- vote --> 
+
+
+				<div id="comments">
+				<% if @place.comments.blank? %>
+				  <div class="statement">Brak komentarzy.</div>
+				<% else %>
+				  <ul class="without-style-type">
+					<% @place.comments.each do |comment| %>
+					<li>
+					<span class="date"><strong> Autor: </strong> <%=h comment.autor %> | <strong> Data: </strong> <%=h comment.created_at %></span>
+					<div class="comment">
+						<div class="contents"><%= simple_format( h comment.contents) %></div>
+					<p>
+					    <%= link_to 'Edytuj', edit_admin_comment_path(comment) %> | 
+					    <%= link_to 'Usuń', admin_comment_path(comment), :confirm => 'Chcesz usunąć to miejsce wraz z komentarzami i daniami?', :method => :delete %> 
+					</p>
+					</div>
+					</li>
+				
+					<% end %>
+				 </ul>
+				<% end 
+				# end of: if comments
+				%>
+				</div> <!-- comments -->
+
+
+			</div><!-- col-left -->
+
+			<div id="col-right">
+
+				<div id="dishes">
+				<div class="standard"> <h3>Dania</h3>
+					<%= link_to 'Dodaj danie', new_admin_place_dish_path(@place) %>
+				</div>
+					<% if @place.dishes.blank? %>
+					  <p>Brak listy dań na stronie.</p>
+					<% else %>
+					  <table class="dishes">  
+					  
+					  <tr>
+					<th></th>
+					   <th><strong>Nazwa:</strong></th>
+					<th></th>	
+					   <th><strong>Waga:</strong></th>
+					   <th><strong>Sztuk:</strong></th>
+					   <th><strong>Cena:</strong></th>   
+						<th>Edycja</th>
+   						<th>Usuwanie</th>
+					  </tr>
+							<% @place.dishes.each do |dish|%>
+						  <tr>
+						     <td><% if dish.is_available %> V <%else%>  X <%end%></td>
+						     <td><%=h dish.name %></td>
+							<td><%=h dish.description %></td>
+						     <td><% if !dish.weight.blank? %><%=h dish.weight %> g <% end %></td>
+						     <td><% if !dish.pieces.blank? %><%=h dish.pieces %> szt<% end %></td>
+							<td><% if !dish.price.blank? %><%=h dish.price %> zł<% end %></td>
+						<td> <%= link_to 'Edytuj', edit_admin_place_dish_path(@place,dish) %> </td>
+	    				 <td>  <%= link_to 'Usuń', admin_place_dish_path(@place,dish) , :confirm => 'Chcesz usunąć to danie?', :method => :delete%> </td>
+						 </tr>
+						 <% end %>
+						 </table>
+					<% end 
+					# end of: if dishes
+					%>
+					<div class="legend">x - niedostępne, v - dostępne</div>
+				</div><!-- dishes -->
+
+
+					<div id="tags-place">
+						<div class="standard"> <h3>Tagi</h3></div>
+						<% @place.tags.each do |tag| %>
+						  <%=h tag.name %><%= link_to '[x]', admin_place_tag_path(@place,tag), :confirm => 'Na pewno chcesz usunąć tego taga?', :method => :delete %> 
+						<% end %>
+					</div><!-- tags -->
+
+
+
+					<div id="new-tag">
+						<% @tag = flash[:errors] unless flash[:errors].nil? %>
+
+					 <% form_for([@place, @tag], :url => admin_place_tags_path(@place)) do |f| %>
+					  <p>
+					    <%= f.label :name, "Nazwa" %><br />
+					    <%= text_field_with_auto_complete :tag, :name, {}, {:method => :get} %>
+					    <%= error_message_on @tag, :name %>    
+					  </p>
+					  <p>
+					    <%= f.submit "Otaguj to miejsce" %>
+					  </p>
+					<% end %>
+					</div><!-- new- tag-->
+
+					<% if !@place.photos.blank? %>
+						<div class="standard"> <h3>Zdjęcia</h3></div>
+						<div class="photos">
+
+						  <%  @place.photos.each do |p| %>
+							<div class="photo-div">
+							  <%= image_tag p.public_filename(:big), :class => "photo"%> 
+							  <%= link_to "Usuń to zdjęcie", :controller => "admin/places", :action => "rmphoto", :id => p.id, :confirm => 'Chcesz usunąć to zdjęcie?' %>
+							</div>
+						  <% end %>
+
+						</div>
+					<% end %>
+	
+		</div><!-- col-right -->
+	</div><!-- place-->
+	</div><!-- places -->
+</div><!-- box-->
+
+
+
+
+

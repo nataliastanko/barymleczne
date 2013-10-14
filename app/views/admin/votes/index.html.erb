@@ -1,0 +1,36 @@
+<div id="box">
+
+	<div class="standard"> <h3>Statystyki dot głosowania na <span class="italic"><%= @place.name %></span></h3></div>
+
+	<% if !@votes.empty? %> 
+	<table>
+	  <tr>
+
+	    <th>Czas</th>
+	    <th>Ocena</th>
+	    <th>IP</th>
+	  <% if current_editor.admin %>
+	    <th>Usuń</th>
+	 <% end %>
+	  </tr>
+
+	<% @votes.each do |vote| %>
+	  <tr>
+
+	   <td> <%=h vote.created_at.strftime(" %d/%m/%Y o godz. %H:%M ") %></td> 
+	    <td><%=h vote.rate %></td>
+	    <td><%=h vote.ip %></td>
+	   
+	  <% if current_editor.admin %>
+	    <td><%= link_to 'Usuń', vote, :confirm => 'Na pewno usunąć?', :method => :delete %></td>
+	  <% end %>
+	  </tr>
+	<% end %>
+	</table>
+	<%= will_paginate @places, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination"} %>
+
+	<% else %> <p class="statement">Brak głosów </p>
+	<% end %>
+
+	<div class="standard"><span class="label"><%= link_to "Wróć do #{@place.name}", admin_place_path(@place)  %></span></div>
+</div><!-- box-->

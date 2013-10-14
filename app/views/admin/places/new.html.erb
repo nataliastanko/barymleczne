@@ -1,0 +1,77 @@
+<div id="box">
+
+<div class="standard"><h3>Dodawanie miejsca</h3>
+Pola oznaczone * są obowiązkowe</div>
+
+<div id="col-left">
+
+<% #zmiana akcji formularza, akcja na placeS
+ form_for(@place, :url => admin_places_path, :html => {:multipart => true}) do |f| %>
+  <p>
+    <span class="label"><%= f.label :name, "Nazwa" %></span><br />
+    <%= f.text_field :name %>
+    <%= error_message_on @place, :name %>    
+  </p>
+ <p>
+    <span class="label"><%= f.label :street, "Ulica" %></span><br />
+    <%= f.text_field :street %>
+    <%= error_message_on @place, :street %> 
+  </p>
+
+ <p> 
+ <div class="open-hours"> <fieldset>
+		<legend><span class="label"><%= f.label :open_hours, "Godziny otwarcia" %></span></legend>
+		 <% index = 0 %>
+		  <% f.fields_for :open_hours do |hour_form| %>
+		    <%= render :partial => 'open_hours', :locals => {:form => hour_form, :index => index } %>
+		    <% index = index + 1 %>
+		  <% end %>
+		   <div id="more-hours"><%= link_to_remote "Dodatkowe pole", {
+		      :url => {:action => "new_open_hours", :id => index },
+		      :update => 'more-hours',
+		      :success => ''
+		    }, {:class => 'add_new_line'}  %>    
+			</fieldset>   
+		</div><!-- open-hours-->
+ <p>
+    <span class="label"><%= f.label :description, "Opis" %></span><br />
+    <%= f.text_area :description %>
+    <%= error_message_on @place, :description %>
+  </p>
+
+<p>
+<span class="label"><%= f.label :name, "Kategoria"%></span><br />
+<%= select_tag 'place[category_id]', '<option value="0">Wybierz kategorię</option> ' + options_from_collection_for_select (Category.all, 'id', 'name', @place.category_id) %>
+    <%= error_message_on @place, :category %>
+</p> 
+ <p>
+    <span class="label"><%= f.label :active, "Publikuj" %></span><br />
+    <%= f.check_box :active %>
+  </p>
+  <p>
+    <%= label :uploaded_data, "Zdjęcie" %><br />
+    <%= file_field :photo, :uploaded_data %>
+  </p>
+
+</div><!-- left -->
+
+<div id="col-right">
+
+    	<%= f.hidden_field :latitude %>
+    	<%= f.hidden_field :longitude %>
+	<span class="label">Oznacz na mapie *</span>
+    	<%= error_message_on @place, :latitude %>
+ <div class="map">
+      <%= @map.div(:width => 550, :height => 400) %>    
+ </div>
+ 
+    <%= f.submit 'Dodaj' %>
+  </p>
+<% end %>
+
+
+	<div class="standard"><%= link_to 'Nie dodawaj miejsca', admin_places_path %></div>
+
+</div><!-- right -->
+
+</div><!-- box-->

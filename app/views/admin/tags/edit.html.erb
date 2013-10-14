@@ -1,0 +1,22 @@
+<div id="box">
+
+<div class="standard"> <h3>Edycja taga <%= @tag.name %></h3></div>
+
+<div class="center">
+
+
+<% form_for(@tag, :url => admin_tag_path(@tag), :method => :put) do |f| %>
+
+  <p>
+    <%= f.label :name, "Nazwa" %><br />
+    <%= f.text_field :name %>
+    <%= error_message_on @tag, :name %>  
+  </p>
+  <p>
+    <%= f.submit 'Zmień' %>
+  </p>
+<% end %>
+
+</div>
+
+</div>

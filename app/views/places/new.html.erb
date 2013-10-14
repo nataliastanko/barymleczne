@@ -1,0 +1,77 @@
+<div id="box">
+
+<div class="standard"> <h3>Zgłoś miejsce, którego tu jeszcze nie ma!</h3>
+Po zgłoszeniu miejsca, oczekuje ono na publikację przez moderatora.<br />
+Pola oznaczone * są obowiązkowe.
+</div>
+
+<% form_for(@place, :html => {:multipart => true}) do |f| %>
+
+<div id="col-left">
+	
+	  <p>
+	    <span class="label"><%= f.label :name ,"Nazwa *"%></span><br />
+	    <%= f.text_field :name %>
+	    <%= error_message_on @place, :name %>    
+	  </p>
+	 <p>
+	    <span class="label"><%= f.label :street, "Ulica *" %></span><br />
+	    <%= f.text_field :street %>
+	    <%= error_message_on @place, :street %> 
+	  </p>
+
+	 <div class="open-hours"> <fieldset>
+		<legend><span class="label"><%= f.label :open_hours, "Godziny otwarcia" %></span></legend>
+	 
+		 <% index = 0 %>
+		  <% f.fields_for :open_hours do |hour_form| %>
+		    <%= render :partial => 'open_hours', :locals => {:form => hour_form, :index => index } %>
+		    <% index = index + 1 %>
+		  <% end %>
+		   <div id="more-hours"><%= link_to_remote "Dodatkowe pole", {
+		      :url => {:action => "new_open_hours", :id => index },
+		      :update => 'more-hours',
+		      :success => ''
+		    }, {:class => 'add_new_line'}  %> 
+		  </div>
+		</fieldset>   
+	</div><!-- open-hours-->
+
+	<p>
+	    <span class="label"><%= f.label :description, "Opis (krótko od siebie) *"%></span><br />
+	    <%= f.text_area :description %>
+	    <%= error_message_on @place, :description %>
+	  </p>
+	<p>
+	<span class="label"><%= f.label :name, "Kategoria *"%></span><br />
+	<%= select_tag 'place[category_id]', '<option value="0">Wybierz kategorię</option> ' + options_from_collection_for_select (Category.all, 'id', 'name', @place.category_id) %>
+	    <%= error_message_on @place, :category %>
+	</p> 
+	 
+	  <p><span class="label"><%= label :uploaded_data, "Zdjęcie" %></span><br />
+	    <%= file_field :photo, :uploaded_data %>
+	  </p>
+
+</div><!-- left -->
+
+<div id="col-right">
+	<span class="label">Oznacz na mapie *</span>
+	 	<%= f.hidden_field :latitude %>
+	    	<%= f.hidden_field :longitude %>
+	    	<%= error_message_on @place, :latitude %>
+	 <div class="map"">
+	      <%= @map.div(:width => 550, :height => 400) %>    
+	 </div>
+	<%= recaptcha_tags %>  
+	  <p>
+	    <%= f.submit 'Dodaj miejsce' %>
+	  </p>
+	
+
+	<div class="standard"><%= link_to 'Nie chcę dodawać nowego miejsca :(', places_path %></div>
+
+</div><!-- right -->
+
+<% end %>
+
+</div><!-- box-->

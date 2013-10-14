@@ -1,0 +1,21 @@
+<div id="box">
+
+<div class="standard"> <h3>Nowa kategoria</h3></div>
+
+<div class="center">
+<% form_for(@category,  :url => admin_category_path(@category), :html => {:method => :put}) do |f| %>
+
+  <p>
+    <%= f.label :name, "Nazwa" %><br />
+    <%= f.text_field :name %>
+    <%= error_message_on @category, :name %>    
+  </p>
+  <p>
+    <%= f.submit 'Zmień' %>
+  </p>
+<% end %>
+
+</div>
+
+</div><!-- box -->
+

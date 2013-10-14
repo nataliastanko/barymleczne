@@ -1,0 +1,27 @@
+<h1>Wszystkie komentarze</h1>
+
+<table>
+  <tr>
+    <th>Treść</th>
+    <th>Autor</th>
+    <th>Email</th>
+    <th>Utworzony</th>    
+    <th>Miejsce?</th>
+    <th>Przejdź do miejsca</th>
+    <th>Edycja</th>
+    <th>Usuń</th>
+  </tr>
+
+<% @comments.each do |comment| %>
+  <tr>
+    <td><%=h comment.contents %></td>
+    <td><%=h comment.autor %></td>
+    <td><%=h comment.email %></td> 
+    <td><%=h comment.created_at %></td>
+    <td><%=h comment.place.name %></td>
+    <td><%= link_to 'Zobacz', admin_place_path(comment.place_id) %></td>
+    <td><%= link_to 'Edytuj', edit_admin_comment_path(comment) %></td>
+    <td><%= link_to 'Usuń', admin_comment_path(comment), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>

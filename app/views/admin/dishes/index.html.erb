@@ -1,0 +1,47 @@
+<div id="box">
+
+<div class="standard"><h3>Wszystkie dania</h3></div>
+<% if @dishes.blank? %>
+	<p>Brak listy dań na stronie.</p>
+<% else %>
+
+<div id="dishes">
+			
+	<table class="dishes">  
+		 <tr> 
+		   <th>Dostepność</th>
+		   <th>Miejsce</th>	
+		   <th><strong>Nazwa:</strong></th>
+		   <th>Opis</th>	
+		   <th><strong>Waga:</strong></th>
+		   <th><strong>Sztuk:</strong></th>
+		   <th><strong>Cena:</strong></th>
+		   <th>Edycja</th>
+		   <th>Usuwanie</th>
+		  </tr>
+
+		<% @dishes.each do |dish| %>
+		  <tr> 
+		    <td><% if dish.is_available %> V <%else%>  X <%end%></td>
+		    <td><%= link_to (dish.place.name, admin_place_path(dish.place.id)) unless dish.place.nil? %></td>
+		    <td><%=h dish.name %></td>
+		    <td><%=h dish.description %></td>
+			<td><%=h dish.weight %></td>
+			<td><%=h dish.pieces %></td>
+		    <td><%=h dish.price %></td>
+		    <td><%= link_to 'Edytuj', edit_admin_dish_path(dish) %></td>
+		    <td><%= link_to 'Usuń', admin_dish_path(dish), :confirm => 'Usunięcie tej pozycji spowoduje usunięcie dania w konkretnym miejscu. Na pewno usunąć?', :method => :delete %></td>
+		 
+		  </tr>
+	<% end %>
+	</table>
+<% end 
+# end of: if dishes
+%>
+	
+
+	<div class="legend">x - niedostępne, v - dostępne</div>
+</div><!-- dishes -->
+</div><!-- box -->
+					  
+				

@@ -1,0 +1,36 @@
+<div id="box">
+
+<div class="standard"> <h3>Edycja moich danych</h3></div>
+
+<div class="center">
+
+<% form_for(@editor, :url => {:controller => "admin/editors", :action => "updateme"} ) do |f| %>
+
+  <p>
+    <%= f.label :password, "Nowe hasło" %><br />
+    <%= f.text_field :password %>
+    <%= error_message_on @editor, :password %>    
+  </p>
+  <p>
+    <%= f.label :login %><br />
+    <%= f.text_field :login %>
+    <%= error_message_on @editor, :login %>    
+  </p>
+  <p>
+    <%= f.label :name_surname, "Imię i nazwisko" %><br />
+    <%= f.text_field :name_surname %>
+    <%= error_message_on @editor, :name_surname %>    
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+    <%= error_message_on @editor, :email %>    
+  </p>
+ 
+ <p>
+    <%= f.submit 'Zmień' %>
+  </p>
+<% end %>
+
+</div>
+</div>

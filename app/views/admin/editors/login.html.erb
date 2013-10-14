@@ -1,0 +1,27 @@
+<div id="box">
+
+	<% if !logged_in? %>
+		<div class="standard"><h3>Zaloguj się</h3></div>
+		<div class="center">
+			
+			<% form_for(Editor.new, :url => {:controller => "admin/editors", :action => :login}) do |f| %>
+			  <%= f.error_messages %>
+			  <p>
+			    <%= f.label :Login %><br />
+			    <%= f.text_field :login %>
+			  </p>
+			 <p>
+			    <%= f.label :"hasło" %><br />
+			    <%= f.password_field :password %>
+			  </p>
+
+			 <p>
+			    <%= f.submit 'Zaloguj' %>
+			  </p>
+			<% end %>
+		</div><!-- logowanie -->
+	<% else %>
+		<p>Już jesteś zalogowany</p>
+	<% end %>
+
+</div><!-- box -->

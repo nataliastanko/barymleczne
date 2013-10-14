@@ -1,0 +1,26 @@
+<% 
+  item = form.object
+  if item.place_id.nil? and item.from_day.nil?
+    # jesli nie ma przekazanego istniejącego obiektu ustalamy defaultowe pola dla formularza (te które są domyślnie wybrane)
+    item.from_day = "Poniedziałek"
+    item.to_day = "Niedziela"
+    item.from_hour = 8
+    item.to_hour = 17
+  end
+
+%>
+
+<div class="row">
+<%= form.label :from_day, "Od dnia:" %>
+<%= select_tag "place[open_hours_attributes][#{index}][from_day]", options_for_select (["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"], item.from_day) %>
+<%= form.label :to_day, "Do dnia:" %>
+<%= select_tag "place[open_hours_attributes][#{index}][to_day]", options_for_select ( ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"], item.to_day) %><br />
+<span class="label">W godzinach</span>
+<%= form.label :from_hour, "Od:" %>
+<% # aktualnie wybrana godzina, zaznaczona domyślna pozycja 
+%>
+<%= select_hour item.attributes['from_hour'], :field_name => :from_hour, :prefix => "place[open_hours_attributes][#{index}]" %>
+<%= form.label :to_hour, "Do:" %>
+<%= select_hour item.attributes['to_hour'],:field_name => "to_hour" , :prefix => "place[open_hours_attributes][#{index}]" %>
+</div>
+

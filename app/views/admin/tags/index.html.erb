@@ -1,0 +1,28 @@
+<div id="box">
+
+<div class="standard"> <h3>Wszystkie tagi w serwisie</h3></div>
+
+
+<table>
+  <tr>
+    <th>Nazwa</th>
+    <th>Edycja</th>
+    <th>Jakie miejsca opisuje?</th>
+<% if current_editor.admin %>
+    <th>Usuń</th>
+<% end %>
+  </tr>
+
+<% @tags.each do |tag| %>
+  <tr>
+    <td><%=h tag.name %></td>
+    <td><%= link_to 'Edycja', edit_admin_tag_path(tag)  %></td>
+    <td><%= link_to 'Miejsca', admin_tag_path(tag)  %></td>
+<% if current_editor.admin %>
+    <td><%= link_to 'Usuń', admin_tag_path(tag), :confirm => 'Usunięcie spowoduje usunięcie powiązań z wszystkimi miejscami', :method => :delete %></td>
+<% end %>
+  </tr>
+<% end %>
+</table>
+
+</div><!-- box-->

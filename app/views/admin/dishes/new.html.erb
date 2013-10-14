@@ -1,0 +1,52 @@
+<div id="box">
+
+	<div class="standard"><h3>Dodaj danie do miejsca <span class="iltalic"><%= @place.name %> ul. <%= @place.street %></span></h3>
+	</div>
+
+<div class="center">
+
+<% form_for([@place, @dish], :url => admin_place_dishes_path) do |f| %>
+
+  <p>
+    <%= f.label :name, "Nazwa" %><br />
+    <%= f.text_field :name %>
+    <%= error_message_on @dish, :name %>    
+  </p>
+ 
+  <p>
+    <%= f.label :price, "Cena" %><br />
+    <%= f.text_field :price %> zł</br >
+    <%= error_message_on @dish, :price %>    
+  </p>
+  <p>
+    <%= f.label :weight, "Waga" %><br />
+    <%= f.text_field :weight %> g<br />
+    <%= error_message_on @dish, :weight %>    
+ </p>
+ <p>
+    <%= f.label :pieces, "Ilość sztuk" %><br />
+    <%= f.text_field :pieces %>
+    <%= error_message_on @dish, :pieces %>    
+  </p>
+ <p>
+    <%= f.label :description, "Opis dania" %><br />
+    <%= f.text_field :description %>
+    <%= error_message_on @dish, :description %>    
+  </p>
+
+  <p>
+    <%= f.label :is_available, "Dostępne?" %><br />
+    <%= f.check_box :is_available %>
+  </p>
+
+  <p>
+    <%= f.submit 'Dodaj' %>
+  </p>
+<% end %>
+
+<div class="standard"><span class="label"><%= link_to "Wróć do #{@place.name}", admin_place_path(@place) %></span></div>
+
+</div>
+
+
+</div><!-- box-->

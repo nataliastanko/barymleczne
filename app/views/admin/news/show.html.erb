@@ -1,0 +1,20 @@
+
+<div id="box">
+
+<div class="standard"> <h3>Aktualności</h3></div>
+
+<div id="news">
+
+<div class="news-one">
+    <span class="title"><%= link_to @new.title, :controller => "news", :action => "show", :id => @new %></span> 
+    <p class="date"> <%=h @new.created_at %></p>
+    <p class="content"><%= simple_format(h @new.contents) %></p>
+    <p class="signature">Dodane przez:<span class="signature"><%=h @new.editor.login %></span>. News dla:<% if @new.for_guests %> gości <% end %><% if @new.for_editors %> edytorów <% end %></p>
+
+<%= link_to 'Edycja',:controller => "admin/news", :action => "edit" , :id => @new %> |
+<%= link_to 'Usuń', {:controller => "admin/news", :action=> "destroy", :id => @new}, :confirm => 'Na pewno usunąc newsa?', :method => :delete %>
+
+</div>
+
+</div><!-- news -->
+</div><!-- box -->

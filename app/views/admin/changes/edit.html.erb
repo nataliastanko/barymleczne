@@ -1,0 +1,31 @@
+<div id="box">
+
+<div class="standard"> <h3>Edycja zgłaszanej zmiany nr <%= @change.id %></h3></div>
+
+<div class="center">
+
+<p class="label">Zasotosowano już tę zmianę? <% if @change.done %>Tak<% else %><span class="red">Nie<% end %></span></p>
+
+<% form_for(@change, :url => admin_change_path(@change), :html => {:method => :put} ) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :author, "Autor" %><br />
+    <%= f.text_field :author %>
+  </p>
+  <p>
+    <%= f.label :email, "Email" %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :description, "Opis" %><br />
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.submit 'Zmien' %>
+  </p>
+<% end %>
+
+</div>
+
+</div>

@@ -1,0 +1,35 @@
+<div id="box">
+<div class="standard"><h3>Nowa aktualność</h3><br />
+Pola oznaczone * są obowiązkowe.</div>
+
+<div class="center">
+<% form_for(:new, :url => {:controller => "admin/news", :action => "create"}) do |f| %>
+
+<p>
+    <span class="label"><%= f.label :title, "Tytuł *" %></span><br />
+    <%= f.text_field :title %>
+    <%= error_message_on @new, :title %>    
+  </p>
+
+  <p>
+    <span class="label"><%= f.label :contents, "Treść *" %></span><br />
+    <%= f.text_area :contents %>
+    <%= error_message_on @new, :contents %>    
+
+  </p>
+ <p><span class="label">Musisz zaznaczyć choć jeden checkbox *</p>
+  <p>
+    <%= f.label :for_editors, "Dla edytorów" %>
+    <%= f.check_box :for_editors %>
+  </p>
+  <p>
+    <%= f.label :for_guests, "Dla gości" %>
+    <%= f.check_box :for_guests %>
+  </p>
+    <p>
+    <span class="label"><%= f.submit 'Publikuj' %></span>
+  </p>
+<% end %>
+</div>
+
+<div><!-- box -->

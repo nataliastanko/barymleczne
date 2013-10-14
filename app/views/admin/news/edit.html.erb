@@ -1,0 +1,45 @@
+<div id="box">
+
+<div class="standard"> <h3>Edycja newsa: <span class="italic"><%= @new.title %></span></h3></div>
+
+<% form_for(@new, :url => {:controller => "admin/news", :action => "update"}, :method => :put) do |f| %>
+
+<div id="col-left">
+
+<div class="standard"> <p class="label">Treść</p></div>
+
+
+  <p class="label">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+    <%= error_message_on @new, :title %>  
+  </p>
+  <p class="label">
+    <%= f.label :contents %><br />
+    <%= f.text_area :contents %>
+    <%= error_message_on @new, :contents %>  
+  </p>
+</div>
+
+<div id="col-right">
+<div class="standard"> <p class="label">Kto będzie widział tego newsa?<br />
+Musisz zaznaczyć choć jeden checkbox.</p></div>
+ 
+  <p>
+    <%= f.label :for_editors, "Dla edytorów" %>
+    <%= f.check_box :for_editors %>
+  </p>
+  <p>
+    <%= f.label :for_guests, "Dla gości" %>
+    <%= f.check_box :for_guests %>
+  </p>
+ 
+  <p>
+    <%= f.submit 'Zapisz miany' %>
+  </p>
+
+</div><!-- right -->
+<% end %>
+
+
+</div><!-- box-->

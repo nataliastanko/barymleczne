@@ -1,0 +1,20 @@
+
+<div id="box">
+<div class="standard"> 
+
+<h3><%= link_to "Aktualności", :controller => "news", :action => "index" %></h3>
+</div>
+
+<div id="news">
+<% for new in @news do  %>
+
+<div class="news-one">
+    <span class="title"><%= link_to new.title, :controller => "news", :action => "show", :id => new %></span> 
+    <p class="date"> <%=h new.created_at %></p>
+    <p class="content"><%= simple_format(h new.contents) %></p>
+    <p class="signature">Dodane przez:<span class="signature"><%=h new.editor.login %></span></p>
+</div>
+<%= will_paginate @news, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination"} %>
+<% end %>
+</div><!-- news -->
+</div><!-- box -->

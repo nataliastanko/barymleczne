@@ -1,0 +1,26 @@
+<div id="box">
+
+<div class="standard"> <h3>Profil</h3></div>
+
+<div class="center">
+
+<p>
+  <b>Admin?</b>
+  <% if @editor.admin %>Tak<% else %>Nie<% end %>
+</p>
+
+<p>
+  <b>Login:</b>
+  <%=h @editor.login %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @editor.email %>
+</p>
+
+<div class="standard"><p class="label"><%= link_to 'Edytuj moje dane', :controller => 'editors', :action => 'editme' %></p></div>
+
+</div>
+
+</div>

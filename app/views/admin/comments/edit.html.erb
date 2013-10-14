@@ -1,0 +1,35 @@
+<div id="box">
+
+	<div class="standard"> <h3>Edycja komentarza do miejsca o nazwie <span class="italic"><%= @comment.place.name %> ul. <%= @comment.place.street  %></span></h3></div>
+ 
+<div class="center">
+	<% form_for(@comment, :url => admin_comment_path(@comment), :html => {:method => :put} ) do |f| %>
+
+
+	  <p>
+	    <%= f.label :autor, "Autor" %><br />
+	    <%= f.text_field :autor %>
+	    <%= error_message_on @comment, :autor %>    
+	  </p>
+	  <p>
+	    <%= f.label :email, "E-mail" %><br />
+	    <%= f.text_field :email %>
+	    <%= error_message_on @comment, :email %>    
+	  </p>
+
+	  <p>
+	    <%= f.label :contents, "Treść" %><br />
+	    <%= f.text_area :contents %>
+	    <%= error_message_on @comment, :contents %>    
+	  </p>
+	 <p>
+	    <%= f.submit 'Zmień' %>
+	  </p>
+	<% end %>
+
+	<div class="standard"><span class="label"><%= link_to 'Wróć do miejsca', admin_place_path(@comment.place_id) %></span></div>
+
+</div>
+
+</div><!-- box-->
+

@@ -1,0 +1,68 @@
+<div id="box">
+
+<% if !@histories.nil? %>
+
+<div class="standard"> <h3>Historia edycji dla usera <span class="italic"><%= @editor.login %></span></h3></div>
+
+<table>
+<tr>
+  <th>Data</th>
+  <th>Miejsce</th>
+  <th>Co zmieniono?</th>
+</tr>
+
+<% @histories.each do |hist| %>
+<tr>
+   <td><%=h hist.created_at %> </td>
+   <td><%= link_to hist.place.name, admin_place_path(hist.place.id) %> </td>
+   <td><%=h hist.what %></td>
+</tr>
+<% end %>
+</table>
+<%= will_paginate @histories, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination" } %>
+
+
+<% elsif !@histone.nil? %>
+
+<div class="standard"> <h3>Historia edycji dla miejsca <span class="italic"><%= link_to @place.name, admin_place_path(@place) %></span></h3></div>
+<table>
+<tr>
+  <th>Data</th>
+  <th>Kto</th>
+  <th>Co zmieniono?</th>
+</tr>
+
+<% @histone.each do |hist| %>
+<tr>
+   <td><%=h hist.created_at %> </td>
+   <td><% if hist.editor_id == 0 %> Gość <% else %><%=h hist.editor.login %><% end %></td>
+   <td><%=h hist.what %></td>
+</tr>
+<% end %>
+</table>
+<%= will_paginate @histone, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination" } %>
+<% else %>
+
+<div class="standard"> <h3>Historia zmian chronologicznie</h3></div>
+
+<table>
+<tr>
+  <th>Data</th>
+  <th>Kto</th>
+  <th>Miejsce</th>
+  <th>Co zmieniono?</th>
+</tr>
+
+<% @histall.each do |change| %>
+<tr>
+   <td><%=h change.created_at %> </td>
+   <td><% if change.editor_id == 0 %> Gość <% else %><%=h change.editor.login %><% end %></td>
+   <td><%= link_to (change.place.name, admin_place_path(change.place.id)) unless change.place.nil? %> </td>
+   <td><%=h change.what %></td>
+</tr>
+<% end %>
+</table>
+<%= will_paginate @histall, {:previous_label => "Poprzednia", :next_label => "Następna", :id => "pagination" } %>
+<% end %>
+
+</div><!-- box -->
